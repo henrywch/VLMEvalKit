@@ -659,6 +659,9 @@ llava_series = {
     "llava_v1_7b": partial(LLaVA, model_path=LLAVA_V1_7B_MODEL_PTH),
     "sharegpt4v_7b": partial(LLaVA, model_path="Lin-Chen/ShareGPT4V-7B"),
     "sharegpt4v_13b": partial(LLaVA, model_path="Lin-Chen/ShareGPT4V-13B"),
+    "llava_next_v1.5_0.5b": partial(
+        LLaVA_NeXT, model_path="/root/autodl-tmp/models/llavanext-v1.5-0.5b"
+    ),
     "llava_next_vicuna_7b": partial(
         LLaVA_Next, model_path="llava-hf/llava-v1.6-vicuna-7b-hf"
     ),
@@ -1514,6 +1517,8 @@ treevgr_series = {
         min_pixels=1280*28*28, max_pixels=16384*28*28,
     ),
 }
+
+
 
 internvl_groups = [
     internvl, internvl2, internvl2_5, mini_internvl, internvl2_5_mpo, 
