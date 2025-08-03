@@ -659,9 +659,6 @@ llava_series = {
     "llava_v1_7b": partial(LLaVA, model_path=LLAVA_V1_7B_MODEL_PTH),
     "sharegpt4v_7b": partial(LLaVA, model_path="Lin-Chen/ShareGPT4V-7B"),
     "sharegpt4v_13b": partial(LLaVA, model_path="Lin-Chen/ShareGPT4V-13B"),
-    "llava_next_v1.5_0.5b": partial(
-        LLaVA_NeXT, model_path="/root/autodl-tmp/models/llavanext-v1.5-0.5b"
-    ),
     "llava_next_vicuna_7b": partial(
         LLaVA_Next, model_path="llava-hf/llava-v1.6-vicuna-7b-hf"
     ),
@@ -1518,6 +1515,12 @@ treevgr_series = {
     ),
 }
 
+llava_small_series = {
+    "llava_next_v1.5_0.5b": partial(
+        LLaVA_Qwen_S, model_path="/root/autodl-tmp/models/llavanext-v1.5-0.5b"
+    ),
+}
+
 
 
 internvl_groups = [
@@ -1542,7 +1545,7 @@ model_groups = [
     aria_series, smolvlm_series, sail_series, valley_series, vita_series,
     ross_series, emu_series, ola_series, ursa_series, gemma_series,
     long_vita_series, ristretto_series, kimi_series, aguvis_series, hawkvl_series, 
-    flash_vl, kimi_vllm_series, oryx_series, treevgr_series, varco_vision_series
+    flash_vl, kimi_vllm_series, oryx_series, treevgr_series, varco_vision_series, llava_small_series
 ]
 
 for grp in model_groups:

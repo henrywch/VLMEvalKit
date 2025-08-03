@@ -392,16 +392,47 @@ class LLaVA_Next(BaseModel):
                 "content": content,
             }
         ]
-        prompt = self.processor.apply_chat_template(
-            conversation, add_generation_prompt=True
+        image_paths = self.extract_image_paths(message)
+        images = [Image.open(x).convert('RGB') for x in image_paths]
+        
+        # 1. 我们自己计算好 image_sizes，并把它作为一个独立的变量保管好
+        image_sizes = [img.size[::-1] for img in images] # (height, width)
+
+        # 2. 调用图像处理器，但 **不传入** image_sizes
+        # 它只负责将图像转换为 pixel_values
+        image_features = self.processor.image_processor(
+            images=images, 
+            return_tensors="pt"
         )
-        inputs = self.processor(prompt, images, return_tensors="pt").to(
-            "cuda", torch.float16
+        
+        # 3. 调用文本分词器
+        text_features = self.processor.tokenizer(
+            text=conversation, 
+            return_tensors="pt",
+            padding=True
         )
-        output = self.model.generate(**inputs, **self.kwargs)
-        answer = self.processor.decode(output[0], skip_special_token=True)
-        answer = self.output_process(answer)
-        answer = answer.replace('<unk>', '')
+        
+        # 4. 手动构建最终的、模型需要的输入字典
+        #    这是最关键的一步！
+        inputs = {
+            'input_ids': text_features.input_ids,
+            'attention_mask': text_features.attention_mask,
+            'pixel_values': image_features.pixel_values,
+            # 直接使用我们第一步计算好的 image_sizes 变量，并将其转换为张量
+            'image_sizes': torch.tensor(image_sizes) 
+        }
+        
+        # 5. 将所有张量移动到目标设备
+        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+        
+        # 后续的 model.generate 调用 (这部分不变)
+        gen_kwargs = {"max_new_tokens": 1024, "do_sample": False}
+        with torch.no_grad():
+            res = self.model.generate(**inputs, **gen_kwargs)
+            answer = self.processor.decode(output[0], skip_special_token=True)
+            answer = self.output_process(answer)
+            answer = answer.replace('<unk>', '')
+        
         return answer
 
 

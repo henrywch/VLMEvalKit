@@ -1,13 +1,14 @@
+# vlmeval/vlm/llava_qwen_small.py
+
 import torch
 from PIL import Image
-from transformers import AutoModel, AutoTokenizer
+from transformers import Qwen2ForCausalLM, AutoTokenizer
 
 from .base import BaseModel
 from ..smp import *
-from ..utils import DATASET_TYPE
 
 
-class LLaVA_NeXT_S(BaseModel):
+class LLaVA_Qwen_S(BaseModel):
 
     INSTALL_REQ = False
     INTERLEAVE = False
@@ -16,7 +17,7 @@ class LLaVA_NeXT_S(BaseModel):
         assert model_path is not None
         self.model_path = model_path
         print(f'load from {self.model_path}')
-        self.model = AutoModel.from_pretrained(self.model_path, trust_remote_code=True)
+        self.model = Qwen2ForCausalLM.from_pretrained(self.model_path, trust_remote_code=True)
         self.model = self.model.to(dtype=torch.bfloat16)
         self.model.eval().cuda()
         self.kwargs = kwargs
@@ -62,12 +63,7 @@ class LLaVA_NeXT_S(BaseModel):
         prompt, image_path = self.message_to_promptimg(message)
         image = Image.open(image_path).convert('RGB')
         msgs = [{'role': 'user', 'content': prompt}]
-        if DATASET_TYPE(dataset) == 'multi-choice':
-            max_new_tokens = 20
-        elif DATASET_TYPE(dataset) == 'Y/N':
-            max_new_tokens = 100
-        else:
-            max_new_tokens = 1024
+        max_new_tokens = 1024
 
         default_kwargs = dict(
             max_new_tokens=max_new_tokens,
@@ -75,7 +71,7 @@ class LLaVA_NeXT_S(BaseModel):
             num_beams=self.num_beams
         )
         default_kwargs.update(self.kwargs)
-        res, _, _ = self.model.chat(
+        res, _, _ = self.model.generate(
             image=image,
             msgs=msgs,
             context=None,
