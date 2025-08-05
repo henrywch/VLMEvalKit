@@ -683,6 +683,9 @@ llava_series = {
     "llava_next_interleave_7b_dpo": partial(
         LLaVA_Next, model_path="llava-hf/llava-interleave-qwen-7b-dpo-hf"
     ),
+    "llava_next_scaled_0.5b": partial(
+        LLaVA_OneVision_HF, model_path="/root/autodl-tmp/models/llavanext-scaled-0.5b"
+    ),
     "llava-onevision-qwen2-0.5b-ov-hf": partial(
         LLaVA_OneVision_HF, model_path="llava-hf/llava-onevision-qwen2-0.5b-ov-hf"
     ),
