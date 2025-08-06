@@ -562,7 +562,10 @@ class LLaVA_OneVision(BaseModel):
                     "mm_spatial_pool_mode"
                 ]
 
-        model_name = get_model_name_from_path(model_path)
+        if model_path == "/root/autodl-tmp/models/llavanext-scaled-0.5b":
+            model_name = "llava-onevision-qwen2-0.5b-si"
+        else: 
+            model_name = get_model_name_from_path(model_path)
         import warnings
         # filter warning align with official code
         warnings.filterwarnings("ignore")

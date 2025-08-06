@@ -103,4 +103,4 @@ from .oryx import Oryx
 from .treevgr import TreeVGR
 from .glm4_1v import GLM4_1v
 from .varco_vision import VarcoVision
-from .llava_qwen_small import LLaVA_Qwen_S
+# from .llava_next_scaled import LLaVA_NeXT_S

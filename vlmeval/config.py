@@ -683,9 +683,6 @@ llava_series = {
     "llava_next_interleave_7b_dpo": partial(
         LLaVA_Next, model_path="llava-hf/llava-interleave-qwen-7b-dpo-hf"
     ),
-    "llava_next_scaled_0.5b": partial(
-        LLaVA_OneVision_HF, model_path="/root/autodl-tmp/models/llavanext-scaled-0.5b"
-    ),
     "llava-onevision-qwen2-0.5b-ov-hf": partial(
         LLaVA_OneVision_HF, model_path="llava-hf/llava-onevision-qwen2-0.5b-ov-hf"
     ),
@@ -697,6 +694,9 @@ llava_series = {
     ),
     "llava-onevision-qwen2-7b-si-hf": partial(
         LLaVA_OneVision_HF, model_path="llava-hf/llava-onevision-qwen2-7b-si-hf"
+    ),
+    "llava_next_scaled_0.5b": partial(
+        LLaVA_OneVision, model_path="/root/autodl-tmp/models/llavanext-scaled-0.5b"
     ),
     "llava_onevision_qwen2_0.5b_si": partial(
         LLaVA_OneVision, model_path="lmms-lab/llava-onevision-qwen2-0.5b-si"
@@ -1518,11 +1518,11 @@ treevgr_series = {
     ),
 }
 
-llava_small_series = {
-    "llava_next_v1.5_0.5b": partial(
-        LLaVA_Qwen_S, model_path="/root/autodl-tmp/models/llavanext-v1.5-0.5b"
-    ),
-}
+# llava_small_series = {
+#     "llava_next_v1.5_0.5b": partial(
+#         LLaVA_Qwen_S, model_path="/root/autodl-tmp/models/llavanext-v1.5-0.5b"
+#     ),
+# }
 
 
 
@@ -1548,8 +1548,10 @@ model_groups = [
     aria_series, smolvlm_series, sail_series, valley_series, vita_series,
     ross_series, emu_series, ola_series, ursa_series, gemma_series,
     long_vita_series, ristretto_series, kimi_series, aguvis_series, hawkvl_series, 
-    flash_vl, kimi_vllm_series, oryx_series, treevgr_series, varco_vision_series, llava_small_series
+    flash_vl, kimi_vllm_series, oryx_series, treevgr_series, varco_vision_series
 ]
+
+# llava_small_series
 
 for grp in model_groups:
     supported_VLM.update(grp)

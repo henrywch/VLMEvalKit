@@ -6,19 +6,20 @@ from .base import BaseModel
 from ..smp import *
 import string
 import pandas as pd
+from llava.model import *
 
 
-class LLaVA_Qwen_S(BaseModel):
+class LLaVA_NeXT_S(BaseModel):
 
     INSTALL_REQ = True
     INTERLEAVE = True
 
-    def __init__(self, model_path='/root/autodl-tmp/models/llavanext-v1.5-0.5b', **kwargs):
+    def __init__(self, model_path='/root/autodl-tmp/models/llavanext-scaled-0.5b', **kwargs):
         assert model_path is not None
         self.model_path = model_path
         print(f'Loading model from {self.model_path}')
 
-        self.model = AutoModelForCausalLM.from_pretrained(
+        self.model = LlavaQwenForCausalLM.from_pretrained(
             self.model_path,
             torch_dtype=torch.bfloat16,
             device_map="auto",
@@ -34,7 +35,7 @@ class LLaVA_Qwen_S(BaseModel):
 
     def use_custom_prompt(self, dataset):
         assert dataset is not None
-        if listinstr(['MMMU'], dataset):
+        if listinstr(['MMBench_DEV_EN'], dataset):
             return True
         return False
 
