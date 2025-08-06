@@ -562,7 +562,7 @@ class LLaVA_OneVision(BaseModel):
                     "mm_spatial_pool_mode"
                 ]
 
-        if model_path == "/root/autodl-tmp/models/llavanext-scaled-0.5b":
+        if "/root/autodl-tmp/models/llavanext-scaled-0.5b" in model_path:
             model_name = "llava-onevision-qwen2-0.5b-si"
         else: 
             model_name = get_model_name_from_path(model_path)
@@ -574,7 +574,7 @@ class LLaVA_OneVision(BaseModel):
             None,
             model_name,
             device_map="auto",
-            overwrite_config=overwrite_config,
+            overwrite_config=overwrite_config
         )
         model.eval()
         model.tie_weights()
